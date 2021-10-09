@@ -51,7 +51,7 @@ img;
         return $this;
     }
 
-    protected function make($action='docx2html'){
+    protected function make($action='docx2html',$preview=false){
         $all = '';
         foreach (glob($this->path,GLOB_ONLYDIR) as $k=>$dir) {
             $imgs = '';
@@ -59,7 +59,7 @@ img;
             foreach (glob($dir.'/[!~$]*') as $file) {
                 $ext = strtolower(pathinfo($file)['extension']);
                 if(in_array($ext,['jpg','jpeg','png'])){//产品图片
-                    $imgs.=sprintf($this->img,substr($file,2));
+                    $imgs.=sprintf($this->img,$preview?$file:$this->getFilePath($file));
                 }elseif($ext=='docx'){//产品描述
                     $desc = $this->$action($file);
                 }elseif($ext=='txt'){
@@ -78,6 +78,10 @@ img;
     public function makeText(){
         return $this->make('docx2text');
     }
+
+    public function makePreview(){
+        return $this->make('docx2html',true);
+    }
     
     private function docx2html($docx){
         $phpWord = \PhpOffice\PhpWord\IOFactory::load($docx);
@@ -90,10 +94,15 @@ img;
         return $content;
      }
     
-     function docx2text($docx){
+    
+    private function docx2text($docx){
          return strip_tags($this->docx2html($docx));
      }
 
-
+     private function getFilePath($file){
+       $names = explode('/',$file);
+       array_shift($names);array_shift($names);
+       return implode('/',$names);
+     }
 }
 
