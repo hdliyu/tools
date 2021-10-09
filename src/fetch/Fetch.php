@@ -5,7 +5,7 @@ class Fetch{
     protected $path='./img/products/*';
 
     protected $html = <<<html
-    <!-- %s -->
+    <!-- #%s START 【%s】 -->
     <div class="flexW">
     <div class="imgW">
         <div class="proSlick">
@@ -20,6 +20,8 @@ class Fetch{
         <a href="javascript:;" class="pubBtn popform2">inquiry</a>
     </div>
     </div>
+    <!-- #%s END 【%s】 -->
+    
 html;
 
     protected $img = <<<img
@@ -56,6 +58,7 @@ img;
         foreach (glob($this->path,GLOB_ONLYDIR) as $k=>$dir) {
             $imgs = '';
             $desc = '';
+            $basename = basename($dir);
             foreach (glob($dir.'/[!~$]*') as $file) {
                 $ext = strtolower(pathinfo($file)['extension']);
                 if(in_array($ext,['jpg','jpeg','png'])){//产品图片
@@ -66,7 +69,7 @@ img;
                     $desc = file_get_contents($file);
                 }
             }
-            $all.=sprintf($this->html,$k+1,$imgs,basename($dir),$desc);
+            $all.=sprintf($this->html,$k+1,$basename,$imgs,$basename,$desc,$k+1,$basename);
         }
         return $all;
     }
