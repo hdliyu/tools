@@ -21,7 +21,7 @@ class Fetch{
     </div>
     </div>
     <!-- #%s END 【%s】 -->
-    
+
 html;
 
     protected $img = <<<img
@@ -62,7 +62,7 @@ img;
             foreach (glob($dir.'/[!~$]*') as $file) {
                 $ext = strtolower(pathinfo($file)['extension']);
                 if(in_array($ext,['jpg','jpeg','png'])){//产品图片
-                    $imgs.=sprintf($this->img,$preview?$file:$this->getFilePath($file));
+                    $imgs.=sprintf($this->img,$preview?'image.php?url='.$file:$this->getFilePath($file));
                 }elseif($ext=='docx'){//产品描述
                     $desc = $this->$action($file);
                 }elseif($ext=='txt'){
@@ -79,7 +79,7 @@ img;
     }
 
     public function makeText(){
-        return $this->make('docx2text');
+        return nl2br(htmlspecialchars($this->make('docx2text')));
     }
 
     public function makePreview(){
