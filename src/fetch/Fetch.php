@@ -30,7 +30,7 @@ html;
 img;
 
     public function path($path){
-      $this->path = $path;
+      $this->path = rtrim($path,'/').'/*';
       return $this;
     }
 
