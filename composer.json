@@ -1,0 +1,17 @@
+{
+    "name": "hdliyu/tools",
+    "autoload": {
+        "psr-4": {
+            "Hdliyu\\Tools\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hdliyu",
+            "email": "278746453@qq.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpword": "^0.18.2"
+    }
+}
