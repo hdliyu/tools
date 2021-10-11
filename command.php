@@ -24,10 +24,9 @@ try{
     if(!in_array($type,['preview','html','text'])) throw new Exception('错误：类型仅支持：preview html text');
     $action = $type == 'preview' ?'makePreview':($type=='html'?'makeHtml':'makeText');
     $content = FetchFacade::path($path)->$action();
-    if(count($content)==0) throw new Exception('错误：生成失败');
+    if(strlen($content)==0) throw new Exception('错误：生成失败');
     if(!file_put_contents('~runtime.html',$content)) throw new Exception('错误：文件写入失败');
     echo '【~runtime.html】生成成功';
 }catch(Exception $e){
     echo $e->getMessage();
 }
-
