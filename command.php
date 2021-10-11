@@ -23,7 +23,10 @@ try{
     if(!is_dir($path)) throw new Exception('目录不存在');
     if(!in_array($type,['preview','html','text'])) throw new Exception('错误：类型仅支持：preview html text');
     $action = $type == 'preview' ?'makePreview':($type=='html'?'makeHtml':'makeText');
-    echo file_put_contents('~runtime.html',FetchFacade::path($path)->$action())?'【~runtime.html】生成成功':'生成失败';
+    $content = FetchFacade::path($path)->$action();
+    if(count($content)==0) throw new Exception('错误：生成失败');
+    if(!file_put_contents('~runtime.html',$content)) throw new Exception('错误：文件写入失败');
+    echo '【~runtime.html】生成成功';
 }catch(Exception $e){
     echo $e->getMessage();
 }
