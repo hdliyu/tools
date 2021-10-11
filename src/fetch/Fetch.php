@@ -76,7 +76,7 @@ img;
                         break;
                 }
             }
-            $all.=sprintf($this->html,$k+1,$basename,$imgs,$basename,$desc,$k+1,$basename);
+            $all.=sprintf($this->html,$k+1,$basename,$imgs,preg_replace('/^\d+\s*/','',$basename),$desc,$k+1,$basename);
         }
         return $all;
     }
