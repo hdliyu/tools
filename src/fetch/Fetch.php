@@ -106,7 +106,7 @@ img;
     
     
     private function docx2text($docx){
-         return strip_tags($this->docx2html($docx));
+         return $this->removeEmptyLine(strip_tags($this->docx2html($docx)));
      }
 
      private function getFilePath($file){
@@ -117,6 +117,10 @@ img;
 
      private function getFileExt($file){
        return strtolower(pathinfo($file)['extension']);
+     }
+
+     private function removeEmptyLine($content){
+       return trim(preg_replace('/(\n|\r|\r\n){2,}/s', '$1', $content));
      }
 }
 
