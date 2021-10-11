@@ -60,13 +60,20 @@ img;
             $desc = '';
             $basename = basename($dir);
             foreach (glob($dir.'/[!~$]*') as $file) {
-                $ext = strtolower(pathinfo($file)['extension']);
-                if(in_array($ext,['jpg','jpeg','png'])){//产品图片
-                    $imgs.=sprintf($this->img,$preview?'image.php?url='.$file:$this->getFilePath($file));
-                }elseif($ext=='docx'){//产品描述
-                    $desc = $this->$action($file);
-                }elseif($ext=='txt'){
-                    $desc = file_get_contents($file);
+                $ext = $this->getFileExt($file);
+                switch($ext){
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                    case 'gif':
+                        $imgs.=sprintf($this->img,$preview?'image.php?url='.$file:$this->getFilePath($file));
+                        break;
+                    case 'docx':
+                        $desc = $this->$action($file);
+                        break;
+                    case 'txt':
+                        $desc = file_get_contents($file);
+                        break;
                 }
             }
             $all.=sprintf($this->html,$k+1,$basename,$imgs,$basename,$desc,$k+1,$basename);
@@ -106,6 +113,10 @@ img;
        $names = explode('/',$file);
        array_shift($names);array_shift($names);
        return implode('/',$names);
+     }
+
+     private function getFileExt($file){
+       return strtolower(pathinfo($file)['extension']);
      }
 }
 
